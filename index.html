@@ -7,29 +7,93 @@
 
   <h1>Welcome to LodgeMate</h1>
 
-  <button onclick="location.href='login.html'">Login</button>
-  <button onclick="location.href='signup.html'">Create Account</button>
+  <p id="message">Checking session...</p>
+
+  <button onclick="goLogin()">
+    Login
+  </button>
+
+  <button onclick="goSignup()">
+    Create Account
+  </button>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
   <script>
-    const supabaseUrl = "https://tabdzfwojeibimaxumex.supabase.co"
-    const supabaseKey = "sb_publishable_JFdYPuCwiAgcI2eZ7Cxt2w_i68ppAHy"
+
+    // Supabase setup
+    const supabaseUrl =
+      "https://tabdzfwojeibimaxumex.supabase.co"
+
+    const supabaseKey =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhYmR6ZndvamVpYmltYXh1bWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNTUzMzcsImV4cCI6MjA5MzkzMTMzN30.yPt5Q_pceK_81_ou-MBDZhYWhKPKNCs7vDus5MxBrEY"
 
     const supabase = window.supabase.createClient(
       supabaseUrl,
       supabaseKey
     )
 
-    async function checkUser() {
-      const { data: { user } } = await supabase.auth.getUser()
 
-      if (user) {
-        window.location.href = "dashboard.html"
+
+    // Check if user is logged in
+    async function checkUser() {
+
+      const message =
+        document.getElementById("message")
+
+      try {
+
+        const {
+          data: { user },
+          error
+        } = await supabase.auth.getUser()
+
+
+
+        // Handle errors
+        if (error) {
+          message.innerText =
+            "Could not verify session."
+          return
+        }
+
+
+
+        // Redirect logged-in users
+        if (user) {
+          window.location.href =
+            "dashboard.html"
+        } else {
+          message.innerText =
+            "Please login or create an account."
+        }
+
+      } catch (err) {
+
+        message.innerText =
+          "Something went wrong."
+
       }
     }
 
+
+
+    // Navigation functions
+    function goLogin() {
+      window.location.href =
+        "login.html"
+    }
+
+    function goSignup() {
+      window.location.href =
+        "signup.html"
+    }
+
+
+
+    // Run session check
     checkUser()
+
   </script>
 
 </body>

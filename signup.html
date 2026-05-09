@@ -7,40 +7,124 @@
 
   <h1>Create Account</h1>
 
-  <input id="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
+  <input
+    id="email"
+    type="email"
+    placeholder="Email"
+  >
 
-  <button onclick="signup()">Sign Up</button>
+  <br><br>
+
+  <input
+    id="password"
+    type="password"
+    placeholder="Password"
+  >
+
+  <br><br>
+
+  <button id="signupBtn" onclick="signup()">
+    Sign Up
+  </button>
+
+  <p id="message"></p>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
   <script>
-    const supabaseUrl = "https://tabdzfwojeibimaxumex.supabase.co"
-    const supabaseKey = "YOUR_PUBLISHABLE_KEY_HERE"
+
+    // Supabase setup
+    const supabaseUrl =
+      "https://tabdzfwojeibimaxumex.supabase.co"
+
+    const supabaseKey =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhYmR6ZndvamVpYmltYXh1bWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNTUzMzcsImV4cCI6MjA5MzkzMTMzN30.yPt5Q_pceK_81_ou-MBDZhYWhKPKNCs7vDus5MxBrEY"
 
     const supabase = window.supabase.createClient(
       supabaseUrl,
       supabaseKey
     )
 
+
+
     async function signup() {
-      const email = document.getElementById("email").value
-      const password = document.getElementById("password").value
 
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password
-      })
+      // Get inputs
+      const email =
+        document.getElementById("email").value.trim()
 
-      if (error) {
-        alert(error.message)
+      const password =
+        document.getElementById("password").value.trim()
+
+      const button =
+        document.getElementById("signupBtn")
+
+      const message =
+        document.getElementById("message")
+
+
+
+      // Clear previous message
+      message.innerText = ""
+
+
+
+      // Validation
+      if (!email || !password) {
+
+        message.innerText =
+          "Please fill in all fields."
+
         return
       }
 
-      alert("Check your email to confirm your account!")
 
-      // DO NOT redirect immediately (important for email confirmation)
+
+      // Disable button while processing
+      button.disabled = true
+      button.innerText = "Creating Account..."
+
+
+
+      // Signup user
+      const { data, error } =
+        await supabase.auth.signUp({
+          email,
+          password
+        })
+
+
+
+      // Handle errors
+      if (error) {
+
+        message.innerText = error.message
+
+        button.disabled = false
+        button.innerText = "Sign Up"
+
+        return
+      }
+
+
+
+      // Success
+      message.innerText =
+        "Account created successfully! Check your email to confirm your account."
+
+
+
+      // Optional: clear inputs
+      document.getElementById("email").value = ""
+      document.getElementById("password").value = ""
+
+
+
+      // Keep button disabled after success
+      button.innerText = "Confirmation Email Sent"
+
     }
+
   </script>
 
 </body>

@@ -16,7 +16,7 @@
 
   <script>
     const supabaseUrl = "https://tabdzfwojeibimaxumex.supabase.co"
-    const supabaseKey = "sb_publishable_JFdYPuCwiAgcI2eZ7Cxt2w_i68ppAHy"
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhYmR6ZndvamVpYmltYXh1bWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNTUzMzcsImV4cCI6MjA5MzkzMTMzN30.yPt5Q_pceK_81_ou-MBDZhYWhKPKNCs7vDus5MxBrEY"
 
     const supabase = window.supabase.createClient(
       supabaseUrl,
@@ -27,14 +27,20 @@
       const email = document.getElementById("email").value
       const password = document.getElementById("password").value
 
+      // 1. Login user
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       })
 
+      // 2. Handle errors
       if (error) {
         alert(error.message)
-      } else {
+        return
+      }
+
+      // 3. Ensure session exists
+      if (data.session) {
         window.location.href = "dashboard.html"
       }
     }
