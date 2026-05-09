@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Signup</title>
+</head>
+<body>
+
+  <h1>Create Account</h1>
+
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+
+  <button onclick="signup()">Sign Up</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+  <script>
+    const supabaseUrl = "https://tabdzfwojeibimaxumex.supabase.co"
+    const supabaseKey = "YOUR_PUBLISHABLE_KEY_HERE"
+
+    const supabase = window.supabase.createClient(
+      supabaseUrl,
+      supabaseKey
+    )
+
+    async function signup() {
+      const email = document.getElementById("email").value
+      const password = document.getElementById("password").value
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password
+      })
+
+      if (error) {
+        alert(error.message)
+        return
+      }
+
+      alert("Check your email to confirm your account!")
+
+      // DO NOT redirect immediately (important for email confirmation)
+    }
+  </script>
+
+</body>
+</html>

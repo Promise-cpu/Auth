@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LodgeMate</title>
+</head>
+<body>
+
+  <h1>Welcome to LodgeMate</h1>
+
+  <button onclick="location.href='login.html'">Login</button>
+  <button onclick="location.href='signup.html'">Create Account</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+  <script>
+    const supabaseUrl = "https://tabdzfwojeibimaxumex.supabase.co"
+    const supabaseKey = "sb_publishable_JFdYPuCwiAgcI2eZ7Cxt2w_i68ppAHy"
+
+    const supabase = window.supabase.createClient(
+      supabaseUrl,
+      supabaseKey
+    )
+
+    async function checkUser() {
+      const { data: { user } } = await supabase.auth.getUser()
+
+      if (user) {
+        window.location.href = "dashboard.html"
+      }
+    }
+
+    checkUser()
+  </script>
+
+</body>
+</html>
